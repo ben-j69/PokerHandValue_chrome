@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Poker Hand Lookup",
+    "version": "1.0",
+    "description": "Quickly look up poker hand rankings from a chart.",
+    "permissions": [],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "Designer.png",
+            "48": "Designer.png",
+            "128": "Designer.png"
+        }
+    }
+}
