@@ -4,4 +4,5 @@
 #Roadmap:
 - tri
 - sauvegarde param
-- code couleur dégradé
+- Display information
+- Improve hands display

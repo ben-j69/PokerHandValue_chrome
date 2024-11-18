@@ -24,26 +24,12 @@ window.addEventListener("load", () => {
 
 inputField.addEventListener("input", () => {
     const searchQuery = inputField.value.toUpperCase();
-    const matches = Object.keys(handRanks).filter((hand) =>
-        hand.includes(searchQuery)
-    );
+    const matches = findMatchingHands(searchQuery);
 
     const sortedMatches = matches.sort((a, b) => handRanks[a] - handRanks[b]);
 
     if (sortedMatches.length > 0) {
-        resultDisplay.innerHTML = `
-            <table>
-                <thead>
-                    <tr><th>Hand</th><th>Value</th></tr>
-                </thead>
-                <tbody>
-                    ${sortedMatches.map((hand) => {
-                        const color = getGradientColor(handRanks[hand]);
-                        return `<tr><td style=" font-size: 20px;">${hand}</td><td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td></tr>`;
-                    }).join('')}
-                </tbody>
-            </table>
-        `;
+        resultDisplay.innerHTML = generateTable(sortedMatches);
     } else {
         resultDisplay.innerText = "No matching hands found";
     }
@@ -51,37 +37,43 @@ inputField.addEventListener("input", () => {
 
 function displayHandRanks() {
     const sortedHands = Object.keys(handRanks).sort((a, b) => handRanks[a] - handRanks[b]);
+    resultDisplay.innerHTML = generateTable(sortedHands);
+}
 
-    resultDisplay.innerHTML = `
+function generateTable(hands) {
+    return `
         <table>
             <thead>
                 <tr><th>Hand</th><th>Value</th></tr>
             </thead>
             <tbody>
-                ${sortedHands.map((hand) => {
+                ${hands.map((hand) => {
                     const color = getGradientColor(handRanks[hand]);
-                    return `<tr><td style=" font-size: 20px;">${hand}</td><td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td></tr>`;
+                    return `<tr><td style="font-size: 20px;">${hand}</td><td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td></tr>`;
                 }).join('')}
             </tbody>
         </table>
     `;
 }
 
+function findMatchingHands(query) {
+    return Object.keys(handRanks).filter((hand) =>
+        hand.includes(query) || hand.split("").reverse().join("").includes(query)
+    );
+}
+
 function getGradientColor(value) {
     let r, g, b;
 
     if (value <= 50) {
-        // Transition de rouge (255,0,0) à jaune (255,255,0)
         r = 255;
         g = Math.round((value / 50) * 255);
         b = 0;
     } else {
-        // Transition de jaune (255,255,0) à bleu clair (173,216,230)
-        r = Math.round(255 - ((value - 50) / 50) * (255 - 173)); // Transition de 255 à 173
-        g = Math.round(255 - ((value - 50) / 50) * (255 - 216)); // Transition de 255 à 216
-        b = Math.round((value - 50) / 50 * 230); // Transition de 0 à 230
+        r = Math.round(255 - ((value - 50) / 50) * (255 - 173));
+        g = Math.round(255 - ((value - 50) / 50) * (255 - 216));
+        b = Math.round((value - 50) / 50 * 230);
     }
 
     return `rgb(${r}, ${g}, ${b})`;
 }
-
