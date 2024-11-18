@@ -25,14 +25,9 @@ window.addEventListener("load", () => {
 
 inputField.addEventListener("input", () => {
     const searchQuery = inputField.value.toUpperCase(); // Convert input to uppercase
-    const matches = Object.keys(handRanks).filter((hand) => {
-        // Si la main est une paire, on ne la trie pas
-        const handSorted = hand.includes(hand[0] + hand[0]) ? hand : sortHand(hand.replace(/[^0-9]/g, ''));
-        const querySorted = searchQuery.includes(searchQuery[0] + searchQuery[0]) ? searchQuery : sortHand(searchQuery.replace(/[^0-9]/g, ''));
-
-        // Vérifie si la main triée contient la requête triée (eviter les correspondances comme "K" et "KK")
-        return handSorted === querySorted || handSorted.includes(querySorted);
-    });
+    const matches = Object.keys(handRanks).filter((hand) =>
+        hand.includes(searchQuery) // Recherche directe dans les clés
+    );
 
     // Trier les mains par valeur croissante
     const sortedMatches = matches.sort((a, b) => handRanks[a] - handRanks[b]);
@@ -47,7 +42,8 @@ inputField.addEventListener("input", () => {
                 <tbody>
                     ${sortedMatches.map((hand) => {
                         const style = hand.endsWith("S") ? "color: red;" : ""; // Red color for suited hands
-                        return `<tr><td style="${style}">${hand.toLowerCase()}</td><td>${handRanks[hand]}</td></tr>`;
+                        const displayHand = hand.slice(0, 2).toUpperCase() + hand.slice(2).toLowerCase(); // Majuscule pour les 2 premiers caractères
+                        return `<tr><td style="${style}">${displayHand}</td><td>${handRanks[hand]}</td></tr>`;
                     }).join('')}
                 </tbody>
             </table>
@@ -56,12 +52,6 @@ inputField.addEventListener("input", () => {
         resultDisplay.innerText = "No matching hands found";
     }
 });
-
-// Fonction pour trier les chiffres dans l'ordre de valeur
-function sortHand(hand) {
-    const order = "23456789TJQKA"; // L'ordre des cartes du plus bas au plus haut
-    return hand.split('').sort((a, b) => order.indexOf(a) - order.indexOf(b)).join('');
-}
 
 // Function to display the full list of hands by default in a table
 function displayHandRanks() {
@@ -75,7 +65,8 @@ function displayHandRanks() {
             <tbody>
                 ${sortedHands.map((hand) => {
                     const style = hand.endsWith("S") ? "color: red;" : ""; // Red color for suited hands
-                    return `<tr><td style="${style}">${hand.toLowerCase()}</td><td>${handRanks[hand]}</td></tr>`;
+                    const displayHand = hand.slice(0, 2).toUpperCase() + hand.slice(2).toLowerCase(); // Majuscule pour les 2 premiers caractères
+                    return `<tr><td style="${style}">${displayHand}</td><td>${handRanks[hand]}</td></tr>`;
                 }).join('')}
             </tbody>
         </table>
