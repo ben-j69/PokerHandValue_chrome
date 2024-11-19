@@ -44,17 +44,37 @@ function generateTable(hands) {
     return `
         <table>
             <thead>
-                <tr><th>Hand</th><th>Value</th></tr>
+                <tr>
+                    <th>Type</th>
+                    <th>Hand</th>
+                    <th>Value</th>
+                    <th>Progress</th>
+                </tr>
             </thead>
             <tbody>
                 ${hands.map((hand) => {
+                    const handType = getHandType(hand); // Obtenir le type de main
+                    const icon = getHandTypeIcon(handType); // Obtenir l'icône associée
+                    const highlightedHand = highlightQuery(hand, inputField.value.toUpperCase());
                     const color = getGradientColor(handRanks[hand]);
-                    return `<tr><td style="font-size: 20px;">${hand}</td><td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td></tr>`;
+                    const progressWidth = Math.round(((100 - handRanks[hand]) / 100) * 100); // En pourcentage
+                    return `
+                        <tr>
+                            <td style="text-align: center; font-size: 20px;">${icon}</td> <!-- Nouvelle colonne avec l'icône -->
+                            <td style="font-size: 20px;">${highlightedHand}</td>
+                            <td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td>
+                            <td>
+                                <div style="background-color: ${color}; width: ${progressWidth}%; height: 10px; border-radius: 5px;"></div>
+                            </td>
+                        </tr>
+                    `;
                 }).join('')}
             </tbody>
         </table>
     `;
 }
+
+
 
 function findMatchingHands(query) {
     return Object.keys(handRanks).filter((hand) =>
@@ -77,3 +97,23 @@ function getGradientColor(value) {
 
     return `rgb(${r}, ${g}, ${b})`;
 }
+
+function highlightQuery(hand, query) {
+    const regex = new RegExp(query, 'gi'); // Insensible à la casse
+    return hand.replace(regex, (match) => `<span style="background-color: yellow;">${match}</span>`);
+}
+
+function getHandType(hand) {
+    if (hand[0] === hand[1]) return "pair"; // Paire (e.g., "AA", "KK")
+    if (hand.endsWith("o")) return "o";    // Off-suited (e.g., "AKo", "QJo")
+    if (hand.endsWith("s")) return "s";    // Suited (e.g., "AKs", "QJs")
+    return "unknown";                      // Sécurité
+}
+
+function getHandTypeIcon(type) {
+    if (type === "pair") return "🃏🃏";   // Icône pour les paires
+    if (type === "o") return "🔹🔸";      // Icône pour off-suited
+    if (type === "s") return "🔺🔺";      // Icône pour suited
+    return "❓";                        // Icône par défaut
+}
+

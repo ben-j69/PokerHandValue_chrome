@@ -1,0 +1,29 @@
+table {
+    width: 300px;
+    min-width: 300px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+}
+
+thead th {
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.hand-type-icon {
+    font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
+    font-size: 18px;
+    color: inherit; /* Laisser la couleur héritée ou configurez une couleur explicite si nécessaire */
+}
