@@ -47,8 +47,8 @@ function generateTable(hands) {
                 <tr>
                     <th>Type</th>
                     <th>Hand</th>
+                    <th>Rank</th>
                     <th>Value</th>
-                    <th>Progress</th>
                 </tr>
             </thead>
             <tbody>
