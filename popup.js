@@ -34,27 +34,29 @@ inputField.addEventListener("input", () => {
 
     // Mettre à jour les résultats de la recherche
     if (sortedMatches.length > 0) {
-        resultDisplay.innerHTML = generateTable(sortedMatches);
+        resultDisplay.innerHTML = generateResultTable(sortedMatches);
     } else {
         resultDisplay.innerText = "No matching hands found";
     }
 
-    // Mettre en surbrillance les cellules correspondantes dans la table de gauche
+    // Highlight in static table
     highlightMatchingCells(searchQuery);
 });
 
-// Charger la table à gauche
+// Display static table on left
 function populatePokerTable() {
     let row = document.createElement('tr');
     pokerTable.appendChild(row);
     let count = 0;
 
     Object.entries(handRanks).forEach(([hand, value]) => {
+        const handType = getHandType(hand)
         const cell = document.createElement('td');
+        cell.className = handType
 
         // Crée des spans pour la main et la valeur
         const handSpan = document.createElement('span');
-        handSpan.className = "hand-span";
+        handSpan.className = `hand-span`;
         handSpan.textContent = hand;
 
         const valueSpan = document.createElement('span');
@@ -81,10 +83,10 @@ function populatePokerTable() {
 // Générer la table principale
 function displayHandRanks() {
     const sortedHands = Object.keys(handRanks).sort((a, b) => handRanks[a] - handRanks[b]);
-    resultDisplay.innerHTML = generateTable(sortedHands);
+    resultDisplay.innerHTML = generateResultTable(sortedHands);
 }
 
-function generateTable(hands) {
+function generateResultTable(hands) {
     const limitedHands = hands.slice(0, 10); // Limite à 11 éléments
 
     return `

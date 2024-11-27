@@ -60,6 +60,20 @@ tr:hover {
     white-space: pre-wrap; /* Pour permettre les sauts de ligne dans les cellules */
 }
 
+.hand-span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.pair {
+    border: 2px solid black !important;
+}
+
+.value-span{
+    font-style: italic;
+    font-size: 12px;
+}
+
 #search-container {
     flex: 1;
 }
