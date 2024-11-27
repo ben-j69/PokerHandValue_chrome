@@ -14,18 +14,22 @@ const handRanks = {
     "A2o": 54, "K2o": 69, "Q2o": 79, "J2o": 87, "T2o": 94, "92o": 97, "82o": 99, "72o": 100, "62o": 95, "52o": 84, "42o": 86, "32o": 91, "22": 24
 };
 
+// Références DOM
 const inputField = document.getElementById("handInput");
 const resultDisplay = document.getElementById("result");
+const pokerTable = document.getElementById("poker-table");
 
+// Charger les données à la fenêtre
 window.addEventListener("load", () => {
     inputField.focus();
-    displayHandRanks();
+    displayHandRanks(); // Charger la table à droite
+    populatePokerTable(); // Charger la table à gauche
 });
 
+// Mettre à jour les résultats lors de la saisie
 inputField.addEventListener("input", () => {
     const searchQuery = inputField.value.toUpperCase();
     const matches = findMatchingHands(searchQuery);
-
     const sortedMatches = matches.sort((a, b) => handRanks[a] - handRanks[b]);
 
     if (sortedMatches.length > 0) {
@@ -35,6 +39,27 @@ inputField.addEventListener("input", () => {
     }
 });
 
+// Charger la table à gauche
+function populatePokerTable() {
+    let row = document.createElement('tr');
+    pokerTable.appendChild(row);
+    let count = 0;
+
+    Object.entries(handRanks).forEach(([hand, value]) => {
+        const cell = document.createElement('td');
+        cell.textContent = `${hand}\n${value}`;
+        cell.style.backgroundColor = getGradientColor(value);
+        row.appendChild(cell);
+        count++;
+
+        if (count % 13 === 0) {
+            row = document.createElement('tr');
+            pokerTable.appendChild(row);
+        }
+    });
+}
+
+// Générer la table principale
 function displayHandRanks() {
     const sortedHands = Object.keys(handRanks).sort((a, b) => handRanks[a] - handRanks[b]);
     resultDisplay.innerHTML = generateTable(sortedHands);
@@ -53,14 +78,14 @@ function generateTable(hands) {
             </thead>
             <tbody>
                 ${hands.map((hand) => {
-                    const handType = getHandType(hand); // Obtenir le type de main
-                    const icon = getHandTypeIcon(handType); // Obtenir l'icône associée
+                    const handType = getHandType(hand);
+                    const icon = getHandTypeIcon(handType);
                     const highlightedHand = highlightQuery(hand, inputField.value.toUpperCase());
                     const color = getGradientColor(handRanks[hand]);
-                    const progressWidth = Math.round(((100 - handRanks[hand]) / 100) * 100); // En pourcentage
+                    const progressWidth = Math.round(((100 - handRanks[hand]) / 100) * 100);
                     return `
                         <tr>
-                            <td style="text-align: center; font-size: 20px;">${icon}</td> <!-- Nouvelle colonne avec l'icône -->
+                            <td style="text-align: center; font-size: 20px;">${icon}</td>
                             <td style="font-size: 20px;">${highlightedHand}</td>
                             <td style="color: ${color}; font-size: 20px;">${handRanks[hand]}</td>
                             <td>
@@ -73,8 +98,6 @@ function generateTable(hands) {
         </table>
     `;
 }
-
-
 
 function findMatchingHands(query) {
     return Object.keys(handRanks).filter((hand) =>
@@ -99,21 +122,20 @@ function getGradientColor(value) {
 }
 
 function highlightQuery(hand, query) {
-    const regex = new RegExp(query, 'gi'); // Insensible à la casse
+    const regex = new RegExp(query, 'gi');
     return hand.replace(regex, (match) => `<span style="background-color: yellow;">${match}</span>`);
 }
 
 function getHandType(hand) {
-    if (hand[0] === hand[1]) return "pair"; // Paire (e.g., "AA", "KK")
-    if (hand.endsWith("o")) return "o";    // Off-suited (e.g., "AKo", "QJo")
-    if (hand.endsWith("s")) return "s";    // Suited (e.g., "AKs", "QJs")
-    return "unknown";                      // Sécurité
+    if (hand[0] === hand[1]) return "pair";
+    if (hand.endsWith("o")) return "o";
+    if (hand.endsWith("s")) return "s";
+    return "unknown";
 }
 
 function getHandTypeIcon(type) {
-    if (type === "pair") return "🃏🃏";   // Icône pour les paires
-    if (type === "o") return "🔹🔸";      // Icône pour off-suited
-    if (type === "s") return "🔺🔺";      // Icône pour suited
-    return "❓";                        // Icône par défaut
+    if (type === "pair") return "🃏🃏";
+    if (type === "o") return "🔹🔸";
+    if (type === "s") return "🔺🔺";
+    return "❓";
 }
-

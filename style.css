@@ -27,3 +27,33 @@ tr:hover {
     font-size: 18px;
     color: inherit; /* Laisser la couleur héritée ou configurez une couleur explicite si nécessaire */
 }
+
+.container {
+    display: flex;
+    gap: 20px;
+    margin: 20px;
+}
+
+#left-table-container {
+    flex-shrink: 0;
+    overflow: auto;
+}
+
+#poker-table {
+    border-collapse: collapse;
+    width: auto;
+    max-width: 300px; /* Optionnel : limiter la largeur */
+}
+
+#poker-table td {
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff; /* Texte en blanc pour les cellules colorées */
+    border: 1px solid #ddd;
+    white-space: pre-wrap; /* Pour permettre les sauts de ligne dans les cellules */
+}
+
+#search-container {
+    flex: 1;
+}
