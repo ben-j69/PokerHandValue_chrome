@@ -3,11 +3,11 @@ table {
 }
 
 #search-result {
-    width: 245px;
+    width: 200px;
 }
 
 th, td {
-    padding: 8px 12px;
+    padding: 8px;
     text-align: left;
 }
 
@@ -26,18 +26,18 @@ tr:hover {
 
 .hand-type-icon {
     font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     color: inherit; /* Laisser la couleur héritée ou configurez une couleur explicite si nécessaire */
 }
 
 .hand-type {
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .container {
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 #left-table-container {
@@ -52,12 +52,11 @@ tr:hover {
 }
 
 #poker-table td {
-    padding: 5px;
+    padding: 4px;
     text-align: center;
-    font-size: 13px;
-    color: #fff; /* Texte en blanc pour les cellules colorées */
-    border: 1px solid #ddd;
+    color: #000;
     white-space: pre-wrap; /* Pour permettre les sauts de ligne dans les cellules */
+    /*border: 1px solid #ddd;*/
 }
 
 .hand-span{

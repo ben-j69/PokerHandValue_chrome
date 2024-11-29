@@ -28,7 +28,7 @@ window.addEventListener("load", () => {
 
 // Mettre à jour les résultats lors de la saisie
 inputField.addEventListener("input", () => {
-    const searchQuery = inputField.value.toUpperCase();
+    const searchQuery = inputField.value.toLowerCase();
     const matches = findMatchingHands(searchQuery);
     const sortedMatches = matches.sort((a, b) => handRanks[a] - handRanks[b]);
 
@@ -80,12 +80,13 @@ function populatePokerTable() {
 }
 
 
-// Générer la table principale
+// Generate list of results
 function displayHandRanks() {
     const sortedHands = Object.keys(handRanks).sort((a, b) => handRanks[a] - handRanks[b]);
     resultDisplay.innerHTML = generateResultTable(sortedHands);
 }
 
+// Display results in the search list
 function generateResultTable(hands) {
     const limitedHands = hands.slice(0, 10); // Limite à 11 éléments
 
@@ -122,13 +123,22 @@ function generateResultTable(hands) {
     `;
 }
 
-
+// Find the matching hands in the search panel
 function findMatchingHands(query) {
-    return Object.keys(handRanks).filter((hand) =>
-        hand.includes(query) || hand.split("").reverse().join("").includes(query)
-    );
+    return Object.keys(handRanks).filter((hand) => {
+        const reversedHand = hand.split("").reverse().join(""); // Inverser la main
+
+        // Correspondance stricte pour "o" ou "s"
+        if (query === "o" || query === "s") {
+            return hand.endsWith(query.toLowerCase()); // Vérifie les suffixes spécifiques
+        }
+
+        // Recherche normale pour d'autres chaînes
+        return hand.includes(query) || reversedHand.includes(query);
+    });
 }
 
+// Returns the background color of the cell
 function getGradientColor(value) {
     let r, g, b;
 
@@ -138,10 +148,10 @@ function getGradientColor(value) {
         g = Math.round((value / 50) * 200); // Limite le vert pour éviter un jaune trop vif
         b = 0;
     } else {
-        // Transition vers un bleu plus foncé
-        r = Math.round(255 - ((value - 50) / 50) * 200); // Réduit davantage le rouge
-        g = Math.round(200 - ((value - 50) / 50) * 150); // Réduit le vert pour éviter un ton turquoise
-        b = Math.round((value - 50) / 50 * 150); // Garde le bleu sombre et lisible
+        // Transition vers un bleu plus clair
+        r = Math.round(255 - ((value - 50) / 50) * 150); // Réduit moins le rouge pour un bleu plus pastel
+        g = Math.round(220 - ((value - 50) / 50) * 100); // Réduit modérément le vert
+        b = Math.round((value - 50) / 50 * 200); // Augmente le bleu, mais pas au maximum
     }
 
     return `rgb(${r}, ${g}, ${b})`;
@@ -166,6 +176,7 @@ function getHandTypeIcon(type) {
     return "❓";
 }
 
+// Highlight searched hand in the left static board
 function highlightMatchingCells(query) {
     const rows = pokerTable.getElementsByTagName("tr");
 
@@ -187,19 +198,17 @@ function highlightMatchingCells(query) {
         const cells = row.getElementsByTagName("td");
         for (const cell of cells) {
             const handSpan = cell.querySelector('.hand-span');
-            const valueSpan = cell.querySelector('.value-span');
+            const handText = handSpan.textContent;
+            const reversedHandText = handText.split("").reverse().join("");
 
-            // Vérifier si la main contient la recherche
-            if (handSpan.textContent.toUpperCase().includes(query)) {
-                cell.style.border = "1px solid black"; // Ajoute un contour noir
+            // Vérifier si la main ou sa version inversée contient la recherche
+            if (handText.includes(query) || reversedHandText.includes(query)) {
                 cell.style.backgroundColor = "rgba(0, 100, 0, 0.5)"; // Surlignage léger
             } else {
                 cell.style.border = "";
-                const value = parseInt(valueSpan.textContent, 10);
+                const value = parseInt(cell.querySelector('.value-span').textContent, 10);
                 cell.style.backgroundColor = getGradientColor(value); // Couleur d'origine
             }
         }
     }
 }
-
-
