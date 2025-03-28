@@ -1,11 +1,13 @@
 table {
-    width: 300px;
-    min-width: 300px;
     border-collapse: collapse;
 }
 
+#search-result {
+    width: 200px;
+}
+
 th, td {
-    padding: 8px 12px;
+    padding: 8px;
     text-align: left;
 }
 
@@ -24,6 +26,53 @@ tr:hover {
 
 .hand-type-icon {
     font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     color: inherit; /* Laisser la couleur héritée ou configurez une couleur explicite si nécessaire */
+}
+
+.hand-type {
+    text-align: center;
+    font-size: 16px;
+}
+
+.container {
+    display: flex;
+    gap: 10px;
+}
+
+#left-table-container {
+    flex-shrink: 0;
+    overflow: auto;
+}
+
+#poker-table {
+    border-collapse: collapse;
+    width: 100px;
+    max-width: 300px; /* Optionnel : limiter la largeur */
+}
+
+#poker-table td {
+    padding: 4px;
+    text-align: center;
+    color: #000;
+    white-space: pre-wrap; /* Pour permettre les sauts de ligne dans les cellules */
+    /*border: 1px solid #ddd;*/
+}
+
+.hand-span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.pair {
+    border: 2px solid black !important;
+}
+
+.value-span{
+    font-style: italic;
+    font-size: 12px;
+}
+
+#search-container {
+    flex: 1;
 }

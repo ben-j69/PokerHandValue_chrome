@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hand Rank Lookup</title>
+    <title>Poker Hand Lookup</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-        <label for="handInput"><b>Poker Hand:</b></label>
-        <input type="text" id="handInput" maxlength="3" placeholder="e.g., 98s">
+    <div class="container">
+        <div id="left-table-container">
+            <table id="poker-table"></table>
+        </div>
+        <div id="search-container">
+            <div>
+                <label for="handInput"><b>Poker Hand:</b></label>
+                <input type="text" id="handInput" maxlength="3" placeholder="e.g., 98s">
+            </div>
+            <div>
+                <p id="search-result"></p>
+            </div>
+        </div>
     </div>
-    <div>
-        <p id="result"></p>
-    </div>
-    <script src="popup.js"></script>
+    <script type="module" src="popup.js"></script>
 </body>
 </html>
